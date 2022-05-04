@@ -67,13 +67,13 @@ func queryScreenings() {
 }
 
 //查询电影信息，电影名作为传入参数，使用了预处理
-func queryMovies(name string) {
+func queryMovies(name string) bool {
 	sqlStr := "SELECT * FROM movie WHERE movieTitle = ?"
 	//进行预处理，先将sql发送给mysql服务端
 	stmt, err := db.Prepare(sqlStr)
 	if err != nil {
 		fmt.Println("Prepare failed,err:", err)
-		return
+		return false
 	}
 	defer func(stmt *sql.Stmt) {
 		err := stmt.Close()
@@ -86,17 +86,18 @@ func queryMovies(name string) {
 	query, err := stmt.Query(name)
 	if err != nil {
 		fmt.Println("Query failed,err:", err)
-		return
+		return false
 	}
 	var m Movie
 	for query.Next() {
 		err := query.Scan(&m.movieNum, &m.movieTitle, &m.releaseDate, &m.duration, &m.aveFilmScore)
 		if err != nil {
 			fmt.Println("Scan failed,err:", err)
-			return
+			return false
 		}
 		fmt.Printf("movieNum:%v movieTitle:%v releaseDate:%v duration:%v aveFilmScore:%v \n", m.movieNum, m.movieTitle, m.releaseDate, m.duration, m.aveFilmScore)
 	}
+	return true
 }
 
 //查询电影院信息，电影院名作为传入参数，使用了预处理

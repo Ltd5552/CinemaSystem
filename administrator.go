@@ -34,3 +34,13 @@ func (a *Administrator) DeleteMovie(name string) {
 func (a *Administrator) DeleteScreening(num string) {
 	deleteScreenings(num)
 }
+
+// QueryMovie 查看电影信息
+func (a *Administrator) QueryMovie(name string) {
+	queryMovies(name)
+}
+
+// QueryScreening 查看所有场次信息
+func (a *Administrator) QueryScreening() {
+	queryScreenings()
+}

@@ -3,9 +3,11 @@ package main
 import "fmt"
 
 // Register 注册函数
-func (u *User) Register() {
+func (u *User) Register() bool {
 	u.uid = RandStr()
 	insertPersonal(u.uid, u.name, u.password)
+	fmt.Println("注册成功,uid为", u.uid)
+	return true
 }
 
 // Login 登录函数
@@ -29,10 +31,10 @@ func (u *User) Login() bool {
 			fmt.Println("Scan failed,err:", err)
 			return false
 		}
-	}
-	if u.password == m.password {
-		fmt.Println("Login successfully!")
-		return true
+		if u.password == m.password {
+			fmt.Println("Login successfully!")
+			return true
+		}
 	}
 	return false
 }
@@ -63,12 +65,15 @@ func (u *User) Buy(num string) {
 		fmt.Println("Insert failed.", err)
 		return
 	}
+	fmt.Println("购买成功")
 	updateSeats(num)
 }
 
 // QueryMovie 查询电影信息函数，传入电影名
 func (u *User) QueryMovie(name string) {
-	queryMovies(name)
+	if !queryMovies(name) {
+		fmt.Println("查询失败,没有该电影!")
+	}
 }
 
 // QueryTheater 查询放映厅信息,传入放映厅编号
