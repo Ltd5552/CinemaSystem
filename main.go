@@ -21,7 +21,8 @@ UA:
 	var op int64
 	_, err = fmt.Scan(&op)
 	if err != nil {
-		return
+		fmt.Println("输入失败请重新尝试...")
+		goto UA
 	}
 	switch op {
 	case 0:
@@ -36,7 +37,8 @@ UA:
 			fmt.Println("     0-退出")
 			_, err = fmt.Scan(&op)
 			if err != nil {
-				return
+				fmt.Println("输入失败请重新尝试...")
+				continue
 			}
 			switch op {
 			case 1:
@@ -68,32 +70,56 @@ UA:
 						case 3:
 							fmt.Println("请输入需要购买的场次信息")
 							var num string
-							fmt.Scan(&num)
+							_, err := fmt.Scan(&num)
+							if err != nil {
+								fmt.Println("输入失败请重新尝试...")
+								break
+							}
 							u.Buy(num)
 						case 4:
 							fmt.Println("请输入需要查询的电影名称")
 							var name string
-							fmt.Scan(&name)
+							_, err := fmt.Scan(&name)
+							if err != nil {
+								fmt.Println("输入失败请重新尝试...")
+								break
+							}
 							u.QueryMovie(name)
 						case 5:
 							fmt.Println("请输入需要查询的放映厅号")
 							var num string
-							fmt.Scan(&num)
+							_, err := fmt.Scan(&num)
+							if err != nil {
+								fmt.Println("输入失败请重新尝试...")
+								break
+							}
 							u.QueryTheater(num)
 						case 6:
 							fmt.Println("请输入需要查询的电影院名")
 							var name string
-							fmt.Scan(&name)
+							_, err := fmt.Scan(&name)
+							if err != nil {
+								fmt.Println("输入失败请重新尝试...")
+								break
+							}
 							u.QueryCinema(name)
 						case 7:
 							fmt.Println("请输入你想观看的电影名")
 							var name string
-							fmt.Scan(&name)
+							_, err := fmt.Scan(&name)
+							if err != nil {
+								fmt.Println("输入失败请重新尝试...")
+								break
+							}
 							u.QueryScreeningByMovie(name)
 						case 8:
 							fmt.Println("请输入分数")
 							var score float64
-							fmt.Scan(&score)
+							_, err := fmt.Scan(&score)
+							if err != nil {
+								fmt.Println("输入失败请重新尝试...")
+								break
+							}
 							u.QueryScreeningByScore(score)
 						case 9:
 							u.QueryScreeningAll()
@@ -101,7 +127,11 @@ UA:
 							fmt.Println("请输入评价的电影编号,电影院编号以及对应分数")
 							var film, cinema string
 							var fs, cs int64
-							fmt.Scan(&film, &fs, &cinema, &cs)
+							_, err := fmt.Scan(&film, &fs, &cinema, &cs)
+							if err != nil {
+								fmt.Println("输入失败请重新尝试...")
+								break
+							}
 							u.Release(cinema, cs, film, fs)
 						}
 						break
@@ -123,18 +153,66 @@ UA:
 		}
 
 	case 2:
-		//var a Administrator
-		fmt.Println("-----欢迎管理员!-----")
-		fmt.Println("     1-查看电影信息")
-		fmt.Println("     2-查看场次信息")
-		fmt.Println("     3-查看取票机信息")
-		fmt.Println("     4-查看用户评论信息")
-		fmt.Println("     5-查看用户总评论数")
-		fmt.Println("     6-增加电影信息")
-		fmt.Println("     7-增加场次信息")
-		fmt.Println("     8-删除电影信息")
-		fmt.Println("     9-删除场次信息")
-		fmt.Println("     0-退出")
+		var a Administrator
+		for true {
+			fmt.Println("-----欢迎管理员!-----")
+			fmt.Println("     1-查看电影信息")
+			fmt.Println("     2-查看场次信息")
+			fmt.Println("     3-查看取票机信息")
+			fmt.Println("     4-查看用户评论信息")
+			fmt.Println("     5-查看用户总评论数")
+			fmt.Println("     6-增加电影信息")
+			fmt.Println("     7-增加场次信息")
+			fmt.Println("     8-删除电影信息")
+			fmt.Println("     9-删除场次信息")
+			fmt.Println("     0-退出")
+			_, err = fmt.Scan(&op)
+			if err != nil {
+				fmt.Println("输入失败请重新尝试...")
+				continue
+			}
+			switch op {
+			case 0:
+				goto UA
+			case 1:
+				fmt.Println("请输入需要查询的电影名称")
+				var name string
+				_, err := fmt.Scan(&name)
+				if err != nil {
+					fmt.Println("输入失败请重新尝试...")
+					break
+				}
+				a.QueryMovie(name)
+			case 2:
+				a.QueryScreening()
+			case 3:
+				a.QueryLeftTicket()
+			case 4:
+				a.QueryAllEvaluation()
+			case 5:
+				a.QuerySumEvaluation()
+			case 6:
+			case 7:
+			case 8:
+				fmt.Println("请输入需要删除的电影名")
+				var name string
+				_, err := fmt.Scan(&name)
+				if err != nil {
+					fmt.Println("输入失败请重新尝试...")
+					break
+				}
+				a.DeleteMovie(name)
+			case 9:
+				fmt.Println("请输入需要删除的场次编号")
+				var num string
+				_, err := fmt.Scan(&num)
+				if err != nil {
+					fmt.Println("输入失败请重新尝试...")
+					break
+				}
+				a.DeleteScreening(num)
+			}
+		}
 
 	}
 	//关闭数据库连接
