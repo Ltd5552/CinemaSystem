@@ -11,7 +11,7 @@ import (
 //3.管理员可以插入电影信息
 
 func insertPersonal(uid string, name string, password string) {
-	sqlStr := "INSERT INTO user(uid,name, password) VALUES (?,?,?)"
+	sqlStr := "INSERT INTO user(uid,name,sex,birthday,location,phone, password) VALUES (?,?,?,?,?,?,?)"
 
 	stmt, err := db.Prepare(sqlStr)
 	if err != nil {
@@ -24,7 +24,7 @@ func insertPersonal(uid string, name string, password string) {
 			fmt.Println("close err:", err)
 		}
 	}(stmt)
-	_, err = stmt.Exec(uid, name, password)
+	_, err = stmt.Exec(uid, name, " ", " ", " ", " ", password)
 	if err != nil {
 		fmt.Printf("Insert failed.\n%v\n", err)
 		return
@@ -57,9 +57,9 @@ func insertScreenings(screeningNum string, movieNum string, theaterNum string, s
 
 }
 
-func insertMovies(movieNum string, movieTitle string, releaseDate string, duration float64, aveFilmScore float64) {
+func insertMovies(movieNum string, movieTitle string, releaseDate string, duration float64) {
 
-	sqlStr := "INSERT INTO movie(movieNum, movieTitle, releaseDate, duration, aveFilmScore ) VALUES (?,?,?,?,?)"
+	sqlStr := "INSERT INTO movie(movieNum, movieTitle, releaseDate, duration,aveFilmScore ) VALUES (?,?,?,?,?)"
 
 	stmt, err := db.Prepare(sqlStr)
 	if err != nil {
@@ -72,7 +72,7 @@ func insertMovies(movieNum string, movieTitle string, releaseDate string, durati
 			fmt.Println("close err:", err)
 		}
 	}(stmt)
-	_, err = stmt.Exec(movieNum, movieTitle, releaseDate, duration, aveFilmScore)
+	_, err = stmt.Exec(movieNum, movieTitle, releaseDate, duration, 0)
 	if err != nil {
 		fmt.Printf("Insert failed.\n%v\n", err)
 		return

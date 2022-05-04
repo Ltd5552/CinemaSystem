@@ -38,12 +38,12 @@ func queryPersonal(UID string) {
 	}
 	var u User
 	for query.Next() {
-		err := query.Scan(&u.uid, &u.name, &u.sex, &u.birthday, &u.location, &u.phone, &u.password)
+		err := query.Scan(&u.uid, &u.name, &u.sex, &u.birthday, &u.location, &u.phone)
 		if err != nil {
 			fmt.Println("Scan failed,err:", err)
 			return
 		}
-		fmt.Printf("uid:%v name:%v sex:%v birthday:%v location:%v phone:%v password:%v\n", u.uid, u.name, u.sex, u.birthday, u.location, u.phone, u.password)
+		fmt.Printf("uid:%v name:%v sex:%v birthday:%v location:%v phone:%v \n", u.uid, u.name, u.sex, u.birthday, u.location, u.phone)
 	}
 }
 

@@ -134,7 +134,6 @@ UA:
 							}
 							u.Release(cinema, cs, film, fs)
 						}
-						break
 					}
 				} else {
 					fmt.Println("登录失败,请重新尝试账户或密码")
@@ -192,7 +191,23 @@ UA:
 			case 5:
 				a.QuerySumEvaluation()
 			case 6:
+				fmt.Println("请输入新增的电影编号、名称、上映日期、时长")
+				var m Movie
+				_, err := fmt.Scan(&m.movieNum, &m.movieTitle, &m.releaseDate, &m.duration)
+				if err != nil {
+					fmt.Println("输入失败请重新尝试...")
+					break
+				}
+				a.InsertMovie(m.movieNum, m.movieTitle, m.releaseDate, m.duration)
 			case 7:
+				fmt.Println("请输入新增的场次编号、电影编号、放映厅号、放映时间、剩余座位")
+				var s Screenings
+				_, err := fmt.Scan(&s.screeningNum, &s.movieNum, &s.theaterNum, &s.showTime, &s.remainSeats)
+				if err != nil {
+					fmt.Println("输入失败请重新尝试...")
+					break
+				}
+				a.InsertScreening(s.screeningNum, s.movieNum, s.theaterNum, s.showTime, s.remainSeats)
 			case 8:
 				fmt.Println("请输入需要删除的电影名")
 				var name string

@@ -21,8 +21,8 @@ func (a *Administrator) InsertScreening(screeningNum string, movieNum string, th
 }
 
 // InsertMovie 插入电影信息
-func (a *Administrator) InsertMovie(movieNum string, movieTitle string, releaseDate string, duration float64, aveFilmScore float64) {
-	insertMovies(movieNum, movieTitle, releaseDate, duration, aveFilmScore)
+func (a *Administrator) InsertMovie(movieNum string, movieTitle string, releaseDate string, duration float64) {
+	insertMovies(movieNum, movieTitle, releaseDate, duration)
 }
 
 // DeleteMovie 删除电影信息
