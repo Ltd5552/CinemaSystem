@@ -96,8 +96,12 @@ func queryMovies(name string) bool {
 			return false
 		}
 		fmt.Printf("movieNum:%v movieTitle:%v releaseDate:%v duration:%v aveFilmScore:%v \n", m.movieNum, m.movieTitle, m.releaseDate, m.duration, m.aveFilmScore)
+		if m.movieNum != "" {
+			return true
+		}
 	}
-	return true
+	return false
+
 }
 
 //查询电影院信息，电影院名作为传入参数，使用了预处理

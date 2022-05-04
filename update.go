@@ -12,7 +12,7 @@ func updateSeats(num string) {
 		fmt.Printf("update failed, err:%v\n", err)
 		return
 	} else {
-		fmt.Printf("update success")
+		fmt.Println("Seats update success")
 	}
 }
 
@@ -32,7 +32,7 @@ func updatePersonal(uid string) {
 		fmt.Printf("update failed, err:%v\n", err)
 		return
 	} else {
-		fmt.Printf("update success")
+		fmt.Println("update success")
 	}
 }
 
@@ -65,7 +65,7 @@ func FilmScore(num string, score float64) {
 		fmt.Printf("update failed, err:%v\n", err)
 		return
 	} else {
-		fmt.Printf("update success")
+		fmt.Println("filmScore update success")
 	}
 }
 
@@ -98,6 +98,6 @@ func CinemaScore(num string, score float64) {
 		fmt.Printf("update failed, err:%v\n", err)
 		return
 	} else {
-		fmt.Printf("update success")
+		fmt.Println("cinemaScore update success")
 	}
 }

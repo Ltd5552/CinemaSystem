@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 // Register 注册函数
 func (u *User) Register() bool {
@@ -65,6 +68,14 @@ func (u *User) Buy(num string) {
 		fmt.Println("Insert failed.", err)
 		return
 	}
+	buyTime := time.Now().Format("2006-01-02 15:04:05") //当前时间的字符串，2006-01-02 15:04:05是固定写法
+
+	sqlStr = "INSERT INTO buy(uid, ticketNum, buyTime) VALUES (?,?,?)"
+	_, err = db.Exec(sqlStr, u.uid, t.ticketNum, buyTime)
+	if err != nil {
+		fmt.Println("Insert failed.", err)
+		return
+	}
 	fmt.Println("购买成功")
 	updateSeats(num)
 }
@@ -106,6 +117,15 @@ func (u *User) Release(cinemaNum string, cinema int64, movieNum string, film int
 	Eid := RandStr()
 	sqlStr := "INSERT INTO evaluation(evaluationId, cinemaScore, fileScore,movieNum,cinemaNum) VALUES (?,?,?,?,?)"
 	_, err := db.Exec(sqlStr, Eid, cinema, film, movieNum, cinemaNum)
+	if err != nil {
+		fmt.Println("Insert failed.", err)
+		return
+	}
+
+	releaseTime := time.Now().Format("2006-01-02 15:04:05") //当前时间的字符串，2006-01-02 15:04:05是固定写法
+
+	sqlStr = "INSERT INTO releases(uid, evaluationId, releaseTime) VALUES (?,?,?)"
+	_, err = db.Exec(sqlStr, u.uid, Eid, releaseTime)
 	if err != nil {
 		fmt.Println("Insert failed.", err)
 		return

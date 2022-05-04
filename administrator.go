@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // QueryLeftTicket 查询所有取票机剩余可印票数
 func (a *Administrator) QueryLeftTicket() {
 	queryTicketMachine()
@@ -37,7 +39,9 @@ func (a *Administrator) DeleteScreening(num string) {
 
 // QueryMovie 查看电影信息
 func (a *Administrator) QueryMovie(name string) {
-	queryMovies(name)
+	if !queryMovies(name) {
+		fmt.Println("查询失败，没有该电影")
+	}
 }
 
 // QueryScreening 查看所有场次信息
