@@ -16,7 +16,7 @@ import (
 
 //查询个人信息，用户的uid作为传入参数，使用了预处理
 func queryPersonal(UID string) {
-	sqlStr := "SELECT * FROM user WHERE uid = ?"
+	sqlStr := "SELECT * FROM detailuser WHERE uid = ?"
 	//进行预处理，先将sql发送给mysql服务端
 	stmt, err := db.Prepare(sqlStr)
 	if err != nil {
@@ -165,7 +165,7 @@ func queryTheater(num string) {
 	}
 }
 
-//查询取票机剩余可印票数，取票机编号名作为传入参数，使用了预处理
+//查询所有取票机剩余可印票数，使用了预处理
 func queryTicketMachine() {
 	sqlStr := "SELECT * FROM ticketmachine"
 	//进行预处理，先将sql发送给mysql服务端

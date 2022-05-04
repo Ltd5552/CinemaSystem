@@ -15,7 +15,7 @@ func (u *User) Login() bool {
 		return false
 	}
 
-	sqlStr := "SELECT password FROM user WHERE uid = ?"
+	sqlStr := "SELECT password FROM account WHERE uid = ?"
 
 	query, err := db.Query(sqlStr, u.uid)
 	if err != nil {
@@ -24,7 +24,7 @@ func (u *User) Login() bool {
 	}
 	var m User
 	for query.Next() {
-		err := query.Scan(&m.uid, &m.name, &m.sex, &m.birthday, &m.location, &m.phone, &m.password)
+		err := query.Scan(&m.password)
 		if err != nil {
 			fmt.Println("Scan failed,err:", err)
 			return false
