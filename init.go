@@ -55,7 +55,9 @@ type Cinema struct {
 
 type Evaluation struct {
 	evaluationId string
+	cinemaNum    string
 	cinemaScore  int64
+	movieNum     string
 	filmScore    int64
 }
 

@@ -47,6 +47,40 @@ func queryPersonal(UID string) {
 	}
 }
 
+//通过uid查询用户名
+func queryName(UID string) string {
+	sqlStr := "SELECT name FROM detailuser WHERE uid = ?"
+	//进行预处理，先将sql发送给mysql服务端
+	stmt, err := db.Prepare(sqlStr)
+	if err != nil {
+		fmt.Println("Prepare failed,err:", err)
+		return "err"
+	}
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
+		if err != nil {
+			return
+		}
+	}(stmt)
+
+	//发送请求参数
+	query, err := stmt.Query(UID)
+	if err != nil {
+		fmt.Println("Query failed,err:", err)
+		return "err"
+	}
+	var u User
+	for query.Next() {
+		err := query.Scan(&u.name)
+		if err != nil {
+			fmt.Println("Scan failed,err:", err)
+			return "err"
+		}
+		return u.name
+	}
+	return "err"
+}
+
 //查询所有场次信息，直接查询
 func queryScreenings() {
 	sqlStr := "SELECT * FROM screenings"
@@ -199,12 +233,12 @@ func queryEvaluation() {
 	}
 	var e Evaluation
 	for query.Next() {
-		err := query.Scan(&e.evaluationId, &e.cinemaScore, &e.filmScore)
+		err := query.Scan(&e.evaluationId, &e.cinemaNum, &e.cinemaScore, &e.movieNum, &e.filmScore)
 		if err != nil {
 			fmt.Println("Scan failed,err:", err)
 			return
 		}
-		fmt.Printf("evaluationId:%v cinemaScore:%v filmScore:%v\n", e.evaluationId, e.cinemaScore, e.filmScore)
+		fmt.Printf("evaluationId:%v cinemaNum:%v cinemaScore:%v movieNum:%v filmScore:%v\n", e.evaluationId, e.cinemaNum, e.cinemaScore, e.movieNum, e.filmScore)
 	}
 }
 
@@ -246,24 +280,24 @@ func queryScreeningsByMovie(name string) {
 
 //统计所有用户总评论数，分组查询
 func querySumEvaluationByUid() {
-	sqlStr := `SELECT uid,name,COUNT(*)
-			   FROM user NATURAL JOIN evaluation
+	sqlStr := `SELECT uid,COUNT(*)
+			   FROM releases NATURAL JOIN evaluation
 			   GROUP BY uid`
 	query, err := db.Query(sqlStr)
 	if err != nil {
 		fmt.Println("Prepare failed,err:", err)
 		return
 	}
-	var uid string
-	var name string
+	var u User
 	var count int
 	for query.Next() {
-		err := query.Scan(&uid, &name, &count)
+		err := query.Scan(&u.uid, &count)
 		if err != nil {
 			fmt.Println("Scan failed,err:", err)
 			return
 		}
-		fmt.Printf("uid:%v name:%v count:%v\n", &uid, &name, &count)
+		u.name = queryName(u.uid)
+		fmt.Printf("uid:%v name:%v count:%v\n", u.uid, u.name, count)
 	}
 }
 
