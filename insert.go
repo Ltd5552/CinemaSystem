@@ -10,6 +10,7 @@ import (
 //2.管理员可以插入场次信息
 //3.管理员可以插入电影信息
 
+//当用户注册后执行
 func insertPersonal(uid string, name string, password string) {
 	sqlStr := "INSERT INTO user(uid,name,sex,birthday,location,phone, password) VALUES (?,?,?,?,?,?,?)"
 
