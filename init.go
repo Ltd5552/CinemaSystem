@@ -102,7 +102,7 @@ func RandStr() string {
 	return string(result)
 }
 
-//判断是否还有作为,返回座位数
+//判断是否还有座位,返回座位数
 func haveSeat(num string) int64 {
 	sqlStr := "SELECT remainSeats FROM screenings WHERE screeningNum = ?"
 	query, err := db.Query(sqlStr, num)

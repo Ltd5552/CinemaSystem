@@ -45,6 +45,7 @@ UA:
 				if login(&u) {
 					fmt.Println("登录成功!")
 					for true {
+						fmt.Println("-----用户界面-----")
 						fmt.Println("     1-查询个人信息")
 						fmt.Println("     2-更新个人信息")
 						fmt.Println("     3-买票")
@@ -75,7 +76,9 @@ UA:
 								fmt.Println("输入失败请重新尝试...")
 								break
 							}
-							u.Buy(num)
+							if !u.Buy(num) {
+								fmt.Println("购买失败...")
+							}
 						case "4":
 							fmt.Println("请输入需要查询的电影名称")
 							var name string

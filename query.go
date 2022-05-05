@@ -47,7 +47,7 @@ func queryPersonal(UID string) {
 	}
 }
 
-//通过uid查询用户名
+//通过uid查询用户名，查询视图
 func queryName(UID string) string {
 	sqlStr := "SELECT name FROM detailuser WHERE uid = ?"
 	//进行预处理，先将sql发送给mysql服务端
@@ -228,7 +228,7 @@ func queryEvaluation() {
 	sqlStr := "SELECT * FROM evaluation"
 	query, err := db.Query(sqlStr)
 	if err != nil {
-		fmt.Println("Prepare failed,err:", err)
+		fmt.Println("query failed,err:", err)
 		return
 	}
 	var e Evaluation

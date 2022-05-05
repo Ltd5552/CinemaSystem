@@ -53,10 +53,15 @@ func (u *User) Update() {
 }
 
 // Buy 用户购买函数，传入购买的场次编号
-func (u *User) Buy(num string) {
+func (u *User) Buy(num string) bool {
 	if haveSeat(num) == 0 {
 		fmt.Println("Failed,no seat left!")
-		return
+		return false
+	}
+
+	if !haveScreenings(num) {
+		fmt.Println("Failed,no such screening!")
+		return false
 	}
 	sqlStr := "INSERT INTO ticket(ticketNum, price, screeningNum) VALUES (?,?,?)"
 	var t Ticket
@@ -66,7 +71,7 @@ func (u *User) Buy(num string) {
 	_, err := db.Exec(sqlStr, t.ticketNum, t.price, t.screeningNum)
 	if err != nil {
 		fmt.Println("Insert failed.", err)
-		return
+		return false
 	}
 	buyTime := time.Now().Format("2006-01-02 15:04:05") //当前时间的字符串，2006-01-02 15:04:05是固定写法
 
@@ -74,10 +79,11 @@ func (u *User) Buy(num string) {
 	_, err = db.Exec(sqlStr, u.uid, t.ticketNum, buyTime)
 	if err != nil {
 		fmt.Println("Insert failed.", err)
-		return
+		return false
 	}
 	fmt.Println("购买成功")
 	updateSeats(num)
+	return true
 }
 
 // QueryMovie 查询电影信息函数，传入电影名
@@ -99,11 +105,19 @@ func (u *User) QueryCinema(name string) {
 
 // QueryScreeningByMovie 查询场次信息,参数为电影名
 func (u *User) QueryScreeningByMovie(name string) {
+	if !haveMovies(name) {
+		fmt.Println("查询失败，没有该电影...")
+		return
+	}
 	queryScreeningsByMovie(name)
 }
 
 // QueryScreeningByScore 查询场次信息,参数为电影分数
 func (u *User) QueryScreeningByScore(score float64) {
+	if score > 10 || score < 0 {
+		fmt.Println("请输入0-10以内的小数或整数...")
+		return
+	}
 	queryScreeningsByScore(score)
 }
 
