@@ -14,20 +14,20 @@ func main() {
 		fmt.Println("Init successfully!")
 	}
 UA:
-	fmt.Println("请选择用户/管理员")
-	fmt.Println("1-用户")
-	fmt.Println("2-管理员")
-	fmt.Println("0-退出")
-	var op int64
+	fmt.Println("-----请选择用户/管理员-----")
+	fmt.Println("        1-用户")
+	fmt.Println("        2-管理员")
+	fmt.Println("        0-退出")
+	var op string
 	_, err = fmt.Scan(&op)
 	if err != nil {
 		fmt.Println("输入失败请重新尝试...")
 		goto UA
 	}
 	switch op {
-	case 0:
+	case "0":
 		break
-	case 1:
+	case "1":
 		var u User
 		for true {
 		LR:
@@ -41,7 +41,7 @@ UA:
 				continue
 			}
 			switch op {
-			case 1:
+			case "1":
 				if login(&u) {
 					fmt.Println("登录成功!")
 					for true {
@@ -61,13 +61,13 @@ UA:
 							return
 						}
 						switch op {
-						case 0:
+						case "0":
 							goto LR
-						case 1:
+						case "1":
 							u.Query()
-						case 2:
+						case "2":
 							u.Update()
-						case 3:
+						case "3":
 							fmt.Println("请输入需要购买的场次信息")
 							var num string
 							_, err := fmt.Scan(&num)
@@ -76,7 +76,7 @@ UA:
 								break
 							}
 							u.Buy(num)
-						case 4:
+						case "4":
 							fmt.Println("请输入需要查询的电影名称")
 							var name string
 							_, err := fmt.Scan(&name)
@@ -85,7 +85,7 @@ UA:
 								break
 							}
 							u.QueryMovie(name)
-						case 5:
+						case "5":
 							fmt.Println("请输入需要查询的放映厅号")
 							var num string
 							_, err := fmt.Scan(&num)
@@ -94,7 +94,7 @@ UA:
 								break
 							}
 							u.QueryTheater(num)
-						case 6:
+						case "6":
 							fmt.Println("请输入需要查询的电影院名")
 							var name string
 							_, err := fmt.Scan(&name)
@@ -103,7 +103,7 @@ UA:
 								break
 							}
 							u.QueryCinema(name)
-						case 7:
+						case "7":
 							fmt.Println("请输入你想观看的电影名")
 							var name string
 							_, err := fmt.Scan(&name)
@@ -112,7 +112,7 @@ UA:
 								break
 							}
 							u.QueryScreeningByMovie(name)
-						case 8:
+						case "8":
 							fmt.Println("请输入分数")
 							var score float64
 							_, err := fmt.Scan(&score)
@@ -121,9 +121,9 @@ UA:
 								break
 							}
 							u.QueryScreeningByScore(score)
-						case 9:
+						case "9":
 							u.QueryScreeningAll()
-						case 10:
+						case "10":
 							fmt.Println("请输入评价的电影编号,电影院编号以及对应分数")
 							var film, cinema string
 							var fs, cs int64
@@ -139,19 +139,21 @@ UA:
 					fmt.Println("登录失败,请重新尝试账户或密码")
 					break
 				}
-			case 2:
+			case "2":
 				if register(&u) {
 					fmt.Println("注册成功!")
 				} else {
 					fmt.Println("注册失败,请重新尝试...")
 				}
 				break
-			case 0:
+			case "0":
 				goto UA
+			default:
+				fmt.Println("指令有误，请重新尝试输入")
 			}
 		}
 
-	case 2:
+	case "2":
 		var a Administrator
 		for true {
 			fmt.Println("-----欢迎管理员!-----")
@@ -171,9 +173,9 @@ UA:
 				continue
 			}
 			switch op {
-			case 0:
+			case "0":
 				goto UA
-			case 1:
+			case "1":
 				fmt.Println("请输入需要查询的电影名称")
 				var name string
 				_, err := fmt.Scan(&name)
@@ -182,15 +184,15 @@ UA:
 					break
 				}
 				a.QueryMovie(name)
-			case 2:
+			case "2":
 				a.QueryScreening()
-			case 3:
+			case "3":
 				a.QueryLeftTicket()
-			case 4:
+			case "4":
 				a.QueryAllEvaluation()
-			case 5:
+			case "5":
 				a.QuerySumEvaluation()
-			case 6:
+			case "6":
 				fmt.Println("请输入新增的电影编号、名称、上映日期、时长")
 				var m Movie
 				_, err := fmt.Scan(&m.movieNum, &m.movieTitle, &m.releaseDate, &m.duration)
@@ -199,7 +201,7 @@ UA:
 					break
 				}
 				a.InsertMovie(m.movieNum, m.movieTitle, m.releaseDate, m.duration)
-			case 7:
+			case "7":
 				fmt.Println("请输入新增的场次编号、电影编号、放映厅号、放映时间、剩余座位")
 				var s Screenings
 				_, err := fmt.Scan(&s.screeningNum, &s.movieNum, &s.theaterNum, &s.showTime, &s.remainSeats)
@@ -208,7 +210,7 @@ UA:
 					break
 				}
 				a.InsertScreening(s.screeningNum, s.movieNum, s.theaterNum, s.showTime, s.remainSeats)
-			case 8:
+			case "8":
 				fmt.Println("请输入需要删除的电影名")
 				var name string
 				_, err := fmt.Scan(&name)
@@ -217,7 +219,7 @@ UA:
 					break
 				}
 				a.DeleteMovie(name)
-			case 9:
+			case "9":
 				fmt.Println("请输入需要删除的场次编号")
 				var num string
 				_, err := fmt.Scan(&num)
@@ -226,9 +228,13 @@ UA:
 					break
 				}
 				a.DeleteScreening(num)
+			default:
+				fmt.Println("指令有误，请重新尝试输入")
 			}
 		}
 
+	default:
+		fmt.Println("指令有误，请重新尝试输入")
 	}
 	//关闭数据库连接
 	err = db.Close()
@@ -254,9 +260,19 @@ func login(u *User) bool {
 }
 
 func register(u *User) bool {
-	fmt.Println("请输入注册的用户名和密码")
+	fmt.Println("请输入注册的用户名和密码,或输入quit退出")
 	var name, password string
-	_, err := fmt.Scan(&name, &password)
+
+	_, err := fmt.Scan(&name)
+	if err != nil {
+		return false
+	}
+
+	if name == "quit" {
+		return false
+	}
+
+	_, err = fmt.Scan(&password)
 	if err != nil {
 		return false
 	}
