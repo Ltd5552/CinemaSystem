@@ -96,7 +96,7 @@ func queryScreenings() {
 			fmt.Println("Scan failed,err:", err)
 			return
 		}
-		fmt.Printf("screeningNum:%v cinemaNum:%v theaterNum:%v showTime:%v remainSeats:%v \n", s.screeningNum, s.movieNum, s.theaterNum, s.showTime, s.remainSeats)
+		fmt.Printf("screeningNum:%v movieNum:%v theaterNum:%v showTime:%v remainSeats:%v \n", s.screeningNum, s.movieNum, s.theaterNum, s.showTime, s.remainSeats)
 	}
 }
 
@@ -233,7 +233,7 @@ func queryEvaluation() {
 	}
 	var e Evaluation
 	for query.Next() {
-		err := query.Scan(&e.evaluationId, &e.cinemaNum, &e.cinemaScore, &e.movieNum, &e.filmScore)
+		err := query.Scan(&e.evaluationId, &e.cinemaScore, &e.filmScore, &e.cinemaNum, &e.movieNum)
 		if err != nil {
 			fmt.Println("Scan failed,err:", err)
 			return
@@ -244,6 +244,11 @@ func queryEvaluation() {
 
 //通过电影名查询场次信息，等值连接查询
 func queryScreeningsByMovie(name string) {
+	if !haveMovies(name) {
+		fmt.Println("没有查询到该电影，请重新尝试...")
+		return
+	}
+
 	sqlStr := `SELECT screeningNum, screenings.movieNum, theaterNum, showTime, remainSeats
 		        FROM screenings,movie
 		        WHERE screenings.movieNum = movie.movieNum AND 

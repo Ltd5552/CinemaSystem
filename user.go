@@ -149,6 +149,9 @@ func (u *User) QueryScreeningAll() {
 
 // Release 发布评论的函数,参数为电影院和电影评分,均为十以内的整数,以及电影编号和电影院编号
 func (u *User) Release(cinemaNum string, cinema int64, movieNum string, film int64) {
+	if cinema > 10 || cinema < 0 || film > 10 || film < 0 {
+		fmt.Println("评分错误，请输入0-10的整数")
+	}
 	Eid := RandStr()
 	begin, err := db.Begin()
 	if err != nil {

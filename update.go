@@ -65,8 +65,6 @@ func FilmScore(num string, score float64) {
 	if err != nil {
 		fmt.Printf("update failed, err:%v\n", err)
 		return
-	} else {
-		fmt.Println("filmScore update success")
 	}
 }
 
@@ -98,7 +96,5 @@ func CinemaScore(num string, score float64) {
 	if err != nil {
 		fmt.Printf("update failed, err:%v\n", err)
 		return
-	} else {
-		fmt.Println("cinemaScore update success")
 	}
 }
