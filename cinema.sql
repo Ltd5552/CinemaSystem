@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Cinema
 CREATE TABLE IF NOT EXISTS Theater
 (
     theaterNum VARCHAR(20) PRIMARY KEY ,
-    cinemaNum VARCHAR(20),
+    cinemaNum VARCHAR(20) PRIMARY KEY ,
     seatsNum INT NOT NULL ,
     FOREIGN KEY (cinemaNum) REFERENCES Cinema(cinemaNum)
 );
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS Movie
 (
     movieNum VARCHAR(20) PRIMARY KEY ,
     movieTitle VARCHAR(15) NOT NULL ,
-    releaseDate VARCHAR(20),
+    releaseDate VARCHAR(20) ,
     duration FLOAT,
     aveFilmScore FLOAT
 );
@@ -108,5 +108,14 @@ CREATE TABLE IF NOT EXISTS Releases
 );
 
 
+CREATE VIEW DetailUser
+AS SELECT uid,name, sex, birthday, location, phone FROM user;
 
+CREATE VIEW Account
+AS SELECT uid,password FROM user;
 
+ALTER TABLE movie ADD INDEX movieName (movieTitle);
+
+ALTER TABLE cinema ADD INDEX cinemaName (cinemaName);
+
+ALTER TABLE user ADD INDEX Uid (uid);
