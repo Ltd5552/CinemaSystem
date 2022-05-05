@@ -5,15 +5,16 @@ import (
 )
 
 // 更新座位数
-func updateSeats(num string) {
+func updateSeats(num string) bool {
 	sqlStr := "update screenings set remainSeats = ? where screeningNum = ?"
 	_, err := db.Exec(sqlStr, haveSeat(num)-1, num)
 	if err != nil {
 		fmt.Printf("update failed, err:%v\n", err)
-		return
+		return false
 	} else {
 		fmt.Println("Seats update success")
 	}
+	return true
 }
 
 //更新个人信息

@@ -54,6 +54,10 @@ func (u *User) Update() {
 
 // Buy 用户购买函数，传入购买的场次编号
 func (u *User) Buy(num string) bool {
+	begin, err := db.Begin()
+	if err != nil {
+		return false
+	}
 	if haveSeat(num) == 0 {
 		fmt.Println("Failed,no seat left!")
 		return false
@@ -68,9 +72,13 @@ func (u *User) Buy(num string) bool {
 	t.ticketNum = RandStr()
 	t.price = 49.9
 	t.screeningNum = num
-	_, err := db.Exec(sqlStr, t.ticketNum, t.price, t.screeningNum)
+	_, err = db.Exec(sqlStr, t.ticketNum, t.price, t.screeningNum)
 	if err != nil {
 		fmt.Println("Insert failed.", err)
+		err := begin.Rollback()
+		if err != nil {
+			return false
+		}
 		return false
 	}
 	buyTime := time.Now().Format("2006-01-02 15:04:05") //当前时间的字符串，2006-01-02 15:04:05是固定写法
@@ -79,10 +87,23 @@ func (u *User) Buy(num string) bool {
 	_, err = db.Exec(sqlStr, u.uid, t.ticketNum, buyTime)
 	if err != nil {
 		fmt.Println("Insert failed.", err)
+		err := begin.Rollback()
+		if err != nil {
+			return false
+		}
 		return false
 	}
 	fmt.Println("购买成功")
-	updateSeats(num)
+	if !updateSeats(num) {
+		err := begin.Rollback()
+		if err != nil {
+			return false
+		}
+	}
+	err = begin.Commit()
+	if err != nil {
+		return false
+	}
 	return true
 }
 
@@ -129,10 +150,18 @@ func (u *User) QueryScreeningAll() {
 // Release 发布评论的函数,参数为电影院和电影评分,均为十以内的整数,以及电影编号和电影院编号
 func (u *User) Release(cinemaNum string, cinema int64, movieNum string, film int64) {
 	Eid := RandStr()
+	begin, err := db.Begin()
+	if err != nil {
+		return
+	}
 	sqlStr := "INSERT INTO evaluation(evaluationId, cinemaScore, fileScore,movieNum,cinemaNum) VALUES (?,?,?,?,?)"
-	_, err := db.Exec(sqlStr, Eid, cinema, film, movieNum, cinemaNum)
+	_, err = db.Exec(sqlStr, Eid, cinema, film, movieNum, cinemaNum)
 	if err != nil {
 		fmt.Println("Insert failed.", err)
+		err := begin.Rollback()
+		if err != nil {
+			return
+		}
 		return
 	}
 
@@ -142,9 +171,17 @@ func (u *User) Release(cinemaNum string, cinema int64, movieNum string, film int
 	_, err = db.Exec(sqlStr, u.uid, Eid, releaseTime)
 	if err != nil {
 		fmt.Println("Insert failed.", err)
+		err := begin.Rollback()
+		if err != nil {
+			return
+		}
 		return
 	}
 	//更新电影分数和电影院分数
 	updateFilmScore()
 	updateCinemaScore()
+	err = begin.Commit()
+	if err != nil {
+		return
+	}
 }
