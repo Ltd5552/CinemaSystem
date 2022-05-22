@@ -1,4 +1,5 @@
 # CinemaSystem
+[![Go](https://github.com/Ltd5552/CinemaSystem/actions/workflows/go.yml/badge.svg)](https://github.com/Ltd5552/CinemaSystem/actions/workflows/go.yml)
 ## 关于
 这是一个Golang操作Mysql数据库的具体实现，学校数据库课程的一次实验，所以偏向于数据库操作     
 - 包含增、删、改、查基本操作，应用了连接查询、嵌套查询、分组查询、索引、视图      
